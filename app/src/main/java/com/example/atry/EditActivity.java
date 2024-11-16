@@ -100,9 +100,9 @@ public class EditActivity extends BaseActivity{
                 }
                 else {
                     if (et.getText().toString().equals(old_content) && !tagChange)
-                        intent.putExtra("mode", -1); // edit nothing
+                        intent.putExtra("mode", -1);
                     else {
-                        intent.putExtra("mode", 1); //edit the content
+                        intent.putExtra("mode", 1);
                         intent.putExtra("content", et.getText().toString());
                         intent.putExtra("time", dateToStr());
                         intent.putExtra("id", id);
@@ -110,7 +110,7 @@ public class EditActivity extends BaseActivity{
                     }
                 }
                 setResult(RESULT_OK, intent);
-                finish();//返回
+                finish();
                 overridePendingTransition(R.anim.in_lefttoright, R.anim.out_lefttoright);
             }
         });
@@ -120,7 +120,7 @@ public class EditActivity extends BaseActivity{
         Intent getIntent = getIntent();
 
         openMode = getIntent.getIntExtra("mode", 0);
-        if (openMode == 3) {//打开已存在的note
+        if (openMode == 3) {
             id = getIntent.getLongExtra("id", 0);
             old_content = getIntent.getStringExtra("content");
             old_time = getIntent.getStringExtra("time");
@@ -147,10 +147,10 @@ public class EditActivity extends BaseActivity{
             Intent intent = new Intent();
             if(openMode == 4){
                 if(et.getText().toString().length() == 0){
-                    intent.putExtra("mode", -1); //nothing new happens.
+                    intent.putExtra("mode", -1);
                 }
                 else{
-                    intent.putExtra("mode", 0); // new one note;
+                    intent.putExtra("mode", 0);
                     intent.putExtra("content", et.getText().toString());
                     intent.putExtra("time", dateToStr());
                     intent.putExtra("tag", tag);
@@ -158,9 +158,9 @@ public class EditActivity extends BaseActivity{
             }
             else {
                 if (et.getText().toString().equals(old_content)&&!tagChange)
-                    intent.putExtra("mode", -1); // edit nothing
+                    intent.putExtra("mode", -1);
                 else {
-                    intent.putExtra("mode", 1); //edit the content
+                    intent.putExtra("mode", 1);
                     intent.putExtra("content", et.getText().toString());
                     intent.putExtra("time", dateToStr());
                     intent.putExtra("id", id);
@@ -193,11 +193,11 @@ public class EditActivity extends BaseActivity{
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 if(openMode == 4){
-                                    intent.putExtra("mode", -1); // delete the note
+                                    intent.putExtra("mode", -1);
                                     setResult(RESULT_OK, intent);
                                 }
                                 else {
-                                    intent.putExtra("mode", 2); // delete the note
+                                    intent.putExtra("mode", 2);
                                     intent.putExtra("id", id);
                                     setResult(RESULT_OK, intent);
                                 }
