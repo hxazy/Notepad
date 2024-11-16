@@ -127,13 +127,13 @@ public class UserSettingsActivity extends BaseActivity {
         int opMode = data.getExtras().getInt("opMode", -1);
         if(opMode == 1){
             int imgId = data.getExtras().getInt("id");
-            SharedPreferences.Editor editor = sharedPreferences.edit(); // 开始编辑该文件
+            SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt("fabColor", imgId);
             editor.commit();
         }
         else if(opMode == 2){
             int imgId = data.getExtras().getInt("id");
-            SharedPreferences.Editor editor = sharedPreferences.edit(); // 开始编辑该文件
+            SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt("fabPlanColor", imgId);
             editor.commit();
         }
@@ -143,7 +143,7 @@ public class UserSettingsActivity extends BaseActivity {
 
         super.setNightMode();
         Intent intent = new Intent(this, UserSettingsActivity.class);
-        intent.putExtra("night_change", !night_change); //重启一次，正负颠倒。最终为正值时重启MainActivity。
+        intent.putExtra("night_change", !night_change);
 
         startActivity(new Intent(this, UserSettingsActivity.class));
         overridePendingTransition(R.anim.night_switch, R.anim.night_switch_over);
@@ -169,6 +169,4 @@ public class UserSettingsActivity extends BaseActivity {
         }
         return super.onKeyDown(keyCode,event);
     }
-
-
 }
