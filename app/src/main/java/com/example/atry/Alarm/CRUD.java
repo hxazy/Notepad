@@ -32,7 +32,6 @@ public class CRUD {
     }
 
     public Plan addPlan(Plan plan){
-        //add a plan object to database
         ContentValues contentValues = new ContentValues();
         contentValues.put(PlanDatabase.TITLE, plan.getTitle());
         contentValues.put(PlanDatabase.CONTENT, plan.getContent());
@@ -43,7 +42,6 @@ public class CRUD {
     }
 
     public Plan getPlan(long id){
-        //get a plan from database using cursor index
         Cursor cursor = db.query(PlanDatabase.TABLE_NAME,columns,PlanDatabase.ID + "=?",
                 new String[]{String.valueOf(id)},null,null, null, null);
         if (cursor != null) cursor.moveToFirst();
@@ -69,18 +67,15 @@ public class CRUD {
     }
 
     public int updatePlan(Plan plan) {
-        //update the info of an existing plan
         ContentValues values = new ContentValues();
         values.put(PlanDatabase.TITLE, plan.getTitle());
         values.put(PlanDatabase.CONTENT, plan.getContent());
         values.put(PlanDatabase.TIME, plan.getTime());
-        // updating row
         return db.update(PlanDatabase.TABLE_NAME, values,
                 PlanDatabase.ID + "=?",new String[] { String.valueOf(plan.getId())});
     }
 
     public void removePlan(Plan plan) {
-        //remove a plan according to ID value
         db.delete(PlanDatabase.TABLE_NAME, PlanDatabase.ID + "=" + plan.getId(), null);
     }
 }
