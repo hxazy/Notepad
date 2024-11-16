@@ -84,8 +84,8 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
 
     private Toolbar myToolbar;
 
-    private PopupWindow popupWindow; // 左侧弹出菜单
-    private PopupWindow popupCover; // 菜单蒙版
+    private PopupWindow popupWindow;
+    private PopupWindow popupCover;
     private LayoutInflater layoutInflater;
     private RelativeLayout main;
     private ViewGroup customView;
@@ -120,7 +120,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
 
         if (super.isNightMode())
             myToolbar.setNavigationIcon(getDrawable(R.drawable.ic_menu_white_24dp));
-        else myToolbar.setNavigationIcon(getDrawable(R.drawable.ic_menu_black_24dp)); // 三道杠
+        else myToolbar.setNavigationIcon(getDrawable(R.drawable.ic_menu_black_24dp));
 
         myToolbar.setNavigationOnClickListener(new OnClickListener() {
             @Override
@@ -142,9 +142,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
         popupWindow.setAnimationStyle(R.style.AnimationFade);
         popupCover.setAnimationStyle(R.style.AnimationCover);
 
-
-        //display the popup window
-        findViewById(R.id.main_layout).post(new Runnable() {//等待main_layout加载完，再show popupwindow
+        findViewById(R.id.main_layout).post(new Runnable() {
             @Override
             public void run() {
                 popupCover.showAtLocation(main, Gravity.NO_GRAVITY, 0, 0);
@@ -242,7 +240,6 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     int tag = position + 1;
                                                     for (int i = 0; i < noteList.size(); i++) {
-                                                        //被删除tag的对应notes tag = 1
                                                         Note temp = noteList.get(i);
                                                         if (temp.getTag() == tag) {
                                                             temp.setTag(1);
@@ -255,7 +252,6 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
                                                     List<String> tagList = Arrays.asList(sharedPreferences.getString("tagListString", null).split("_")); //获取tags
                                                     if(tag + 1 < tagList.size()) {
                                                         for (int j = tag + 1; j < tagList.size() + 1; j++) {
-                                                            //大于被删除的tag的所有tag减一
                                                             for (int i = 0; i < noteList.size(); i++) {
                                                                 Note temp = noteList.get(i);
                                                                 if (temp.getTag() == j) {
@@ -269,7 +265,6 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
                                                         }
                                                     }
 
-                                                    //edit the preference
                                                     List<String> newTagList = new ArrayList<>();
                                                     newTagList.addAll(tagList);
                                                     newTagList.remove(position);
@@ -383,18 +378,18 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
         myToolbar = findViewById(R.id.my_toolbar);
         refreshLvVisibility();
 
-        mEmptyView = findViewById(R.id.emptyView); // search page
+        mEmptyView = findViewById(R.id.emptyView);
 
         adapter = new NoteAdapter(getApplicationContext(), noteList);
         planAdapter = new PlanAdapter(getApplicationContext(), planList);
 
         refreshListView();
         lv.setAdapter(adapter);
-        lv.setEmptyView(mEmptyView); // connect empty textview with listview
+        lv.setEmptyView(mEmptyView);
         lv_plan.setAdapter(planAdapter);
 
         boolean temp = sharedPreferences.getBoolean("content_switch", false);
-        content_switch.setChecked(temp);//判断是看note还是plan
+        content_switch.setChecked(temp);
         content_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -409,10 +404,9 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, EditActivity.class);
-                intent.putExtra("mode", 4);     // MODE of 'new note'
-                startActivityForResult(intent, 1);      //collect data from edit
+                intent.putExtra("mode", 4); 
+                startActivityForResult(intent, 1);
                 overridePendingTransition(R.anim.in_righttoleft, R.anim.out_righttoleft);
-
             }
         });
         fab_alarm.setOnClickListener(new OnClickListener() {
@@ -439,7 +433,6 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
     }
 
     private void refreshLvVisibility() {
-        //决定应该现实notes还是plans
         boolean temp = sharedPreferences.getBoolean("content_switch", false);
         if(temp){
             lv_layout.setVisibility(GONE);
@@ -456,13 +449,11 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
     }
 
     public void initPopupView() {
-        //instantiate the popup.xml layout file
         layoutInflater = (LayoutInflater) MainActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         customView = (ViewGroup) layoutInflater.inflate(R.layout.setting_layout, null);
         coverView = (ViewGroup) layoutInflater.inflate(R.layout.setting_cover, null);
 
         main = findViewById(R.id.main_layout);
-        //instantiate popup window
         wm = getWindowManager();
         metrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(metrics);
@@ -503,10 +494,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
             editor.putBoolean("noteTitle", true);
             editor.commit();
         }
-
-
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
@@ -556,7 +544,6 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
                                                     refreshListView();
                                                 }
 
-                                                //根据模式与时长删除对顶的计划s/笔记s
                                                 private void removeSelectItems(int which, int mode) {
                                                     int monthNum = 0;
                                                     switch (which){
@@ -580,7 +567,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
                                                     String selectDateStr = simpleDateFormat.format(selectDate);
                                                     Log.d(TAG, "removeSelectItems: " + selectDateStr);
                                                     switch(mode){
-                                                        case 1: //notes
+                                                        case 1:
                                                             dbHelper = new NoteDatabase(context);
                                                             SQLiteDatabase db = dbHelper.getWritableDatabase();
                                                             Cursor cursor = db.rawQuery("select * from notes" ,null);
@@ -592,7 +579,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
                                                             db.execSQL("update sqlite_sequence set seq=0 where name='notes'"); //reset id to 1
                                                             refreshListView();
                                                             break;
-                                                        case 2: //plans
+                                                        case 2:
                                                             planDbHelper = new PlanDatabase(context);
                                                             SQLiteDatabase pdb = planDbHelper.getWritableDatabase();
                                                             Cursor pcursor = pdb.rawQuery("select * from plans" ,null);
@@ -698,11 +685,11 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
         com.example.atry.Alarm.CRUD op1 = new com.example.atry.Alarm.CRUD(context);
         op1.open();
         if(planList.size() > 0) {
-            cancelAlarms(planList);//删除所有闹钟
+            cancelAlarms(planList);
             planList.clear();
         }
         planList.addAll(op1.getAllPlans());
-        startAlarms(planList);//添加所有新闹钟
+        startAlarms(planList);
         if (sharedPreferences.getBoolean("reverseSort", false)) sortPlans(planList, 2);
         else sortPlans(planList, 1);
         op1.close();
@@ -939,7 +926,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
                         Log.d(TAG, "sortnotes 1");
                         return npLong(dateStrToSec(o2.getTime()) - dateStrToSec(o1.getTime()));
                     }
-                    else if (mode == 2) {//reverseSort
+                    else if (mode == 2) {
                         Log.d(TAG, "sortnotes 2");
                         return npLong(dateStrToSec(o1.getTime()) - dateStrToSec(o2.getTime()));
                     }
@@ -958,7 +945,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
                 try {
                     if (mode == 1)
                         return npLong(calStrToSec(o1.getTime()) - calStrToSec(o2.getTime()));
-                    else if (mode == 2) //reverseSort
+                    else if (mode == 2)
                         return npLong(calStrToSec(o2.getTime()) - calStrToSec(o1.getTime()));
                 } catch (ParseException e) {
                     e.printStackTrace();
