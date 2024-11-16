@@ -806,7 +806,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
         long note_Id;
         returnMode = data.getExtras().getInt("mode", -1);
         note_Id = data.getExtras().getLong("id", 0);
-        if (returnMode == 1) {  //update current note
+        if (returnMode == 1) {
 
             String content = data.getExtras().getString("content");
             String time = data.getExtras().getString("time");
@@ -1065,10 +1065,8 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
                         if (!sharedPreferences.contains("wordNumber")) {
                             editor.putInt("wordNumber", 0);
                             editor.commit();
-
                         }
                     }
-
                 }
             }
         }
@@ -1106,7 +1104,6 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
         }
 
         public void deleteNote() {
-
         }
 
         public void editNote(String oldContent, String newContent) {
@@ -1118,9 +1115,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
             }
         }
 
-
         public void setState(int mode) {
-            //set corresponding state to true in case repetition of annoucement
             SharedPreferences.Editor editor = sharedPreferences.edit();
             switch (mode) {
                 case 1:
@@ -1137,7 +1132,6 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
         }
         
         public void resetAll() {
-            //reset all prefs and state
             noteNumber = 0;
             wordNumber = 0;
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -1147,7 +1141,5 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
             editor.putInt("wordLevel", 0);
             editor.commit();
         }
-
     }
-
 }
