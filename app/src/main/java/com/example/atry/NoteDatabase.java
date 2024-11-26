@@ -33,20 +33,9 @@ public class NoteDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        /*for(int i = oldVersion; i < newVersion; i++) {
-            switch (i) {
-                case 1:
-                    break;
-                case 2:
-                    updateMode(db);
-                default:
-                    break;
-            }
-        }*/
     }
 
     private void updateMode(SQLiteDatabase db){
-        //version 1 -> 2, 增加 mode -- notes的分类，默认为1
         db.execSQL("alter table "+ TABLE_NAME + " add column " + MODE);
         Cursor cursor = db.rawQuery("select * from " + TABLE_NAME, null);
         while(cursor.moveToNext()){
@@ -56,7 +45,7 @@ public class NoteDatabase extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put(CONTENT, content);
             values.put(TIME, time);
-            values.put(MODE, 1);//默认模式
+            values.put(MODE, 1);
             db.update(TABLE_NAME, values, CONTENT +"=?", new String[]{content});
         }
         Log.d("Base", "update db 1 - 2");

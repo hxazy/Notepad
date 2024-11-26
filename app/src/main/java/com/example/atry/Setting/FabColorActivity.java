@@ -127,7 +127,7 @@ public class FabColorActivity extends AppCompatActivity implements View.OnClickL
         }else {
 
             Intent intent = new Intent();
-            intent.putExtra("opMode", openMode);//decide which button according to input intent
+            intent.putExtra("opMode", openMode);
             switch (v.getId()) {
                 case R.id.q:
                     intent.putExtra("id", -500072);

@@ -34,7 +34,6 @@ public class CRUD {
     }
 
     public Note addNote(Note note){
-        //add a note object to database
         ContentValues contentValues = new ContentValues();
         contentValues.put(NoteDatabase.CONTENT, note.getContent());
         contentValues.put(NoteDatabase.TIME, note.getTime());
@@ -45,7 +44,6 @@ public class CRUD {
     }
 
     public Note getNote(long id){
-        //get a note from database using cursor index
         Cursor cursor = db.query(NoteDatabase.TABLE_NAME,columns,NoteDatabase.ID + "=?",
                 new String[]{String.valueOf(id)},null,null, null, null);
         if (cursor != null) cursor.moveToFirst();
@@ -54,7 +52,8 @@ public class CRUD {
     }
 
     public List<Note> getAllNotes(){
-        Cursor cursor = db.query(NoteDatabase.TABLE_NAME,columns,null,null,null, null, null);
+        Cursor cursor = db.query(
+                NoteDatabase.TABLE_NAME,columns,null,null,null, null, null);
 
         List<Note> notes = new ArrayList<>();
         if(cursor.getCount() > 0){
