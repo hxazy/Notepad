@@ -84,7 +84,6 @@ public class NoteAdapter extends BaseAdapter implements Filterable {
                     if (note.getContent().contains(charSequence)) {
                         list.add(note);
                     }
-
                 }
             }
             result.values = list;
@@ -102,5 +101,4 @@ public class NoteAdapter extends BaseAdapter implements Filterable {
             }
         }
     }
-
 }

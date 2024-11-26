@@ -166,6 +166,4 @@ public class UserSettingsActivity extends BaseActivity {
         }
         return super.onKeyDown(keyCode,event);
     }
-
-
 }

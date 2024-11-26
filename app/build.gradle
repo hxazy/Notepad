@@ -3,10 +3,6 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         debug {
-//            storeFile file('D:\\apppp\\Android Studio\\_key_directory\\keystore.jks')
-//            storePassword '951225tyb'
-//            keyAlias = 'piggynote'
-//            keyPassword '951225tyb'
         }
     }
     compileSdkVersion 28

@@ -67,7 +67,6 @@ public class FabColorActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void chooseCurFabColor(int fabColor){
-        //根据 preference.xml中的fabColor值调整curFab颜色，从MainActivity抄过来的
         switch (fabColor){
             case -500072:
                 curFab.setBackgroundResource(R.color.q);

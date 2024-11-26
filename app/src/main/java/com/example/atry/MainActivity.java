@@ -84,8 +84,8 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
 
     private Toolbar myToolbar;
 
-    private PopupWindow popupWindow;
-    private PopupWindow popupCover;
+    private PopupWindow popupWindow; // 左侧弹出菜单
+    private PopupWindow popupCover; // 菜单蒙版
     private LayoutInflater layoutInflater;
     private RelativeLayout main;
     private ViewGroup customView;
@@ -120,7 +120,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
 
         if (super.isNightMode())
             myToolbar.setNavigationIcon(getDrawable(R.drawable.ic_menu_white_24dp));
-        else myToolbar.setNavigationIcon(getDrawable(R.drawable.ic_menu_black_24dp));
+        else myToolbar.setNavigationIcon(getDrawable(R.drawable.ic_menu_black_24dp)); // 三道杠
 
         myToolbar.setNavigationOnClickListener(new OnClickListener() {
             @Override
@@ -142,6 +142,8 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
         popupWindow.setAnimationStyle(R.style.AnimationFade);
         popupCover.setAnimationStyle(R.style.AnimationCover);
 
+
+        //display the popup window
         findViewById(R.id.main_layout).post(new Runnable() {//等待main_layout加载完，再show popupwindow
             @Override
             public void run() {
@@ -164,7 +166,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
                                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            List<String> tagList = Arrays.asList(sharedPreferences.getString("tagListString", null).split("_"));
+                                            List<String> tagList = Arrays.asList(sharedPreferences.getString("tagListString", null).split("_")); //获取tags
 
                                             String name = et.getText().toString();
                                             if (!tagList.contains(name)) {
@@ -191,7 +193,8 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
                     }
                 });
 
-                List<String> tagList = Arrays.asList(sharedPreferences.getString("tagListString", null).split("_"));
+                //final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                List<String> tagList = Arrays.asList(sharedPreferences.getString("tagListString", null).split("_")); //获取tags
                 tagAdapter = new TagAdapter(context, tagList, numOfTagNotes(tagList));
                 lv_tag.setAdapter(tagAdapter);
 
@@ -239,6 +242,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     int tag = position + 1;
                                                     for (int i = 0; i < noteList.size(); i++) {
+                                                        //被删除tag的对应notes tag = 1
                                                         Note temp = noteList.get(i);
                                                         if (temp.getTag() == tag) {
                                                             temp.setTag(1);
@@ -251,6 +255,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
                                                     List<String> tagList = Arrays.asList(sharedPreferences.getString("tagListString", null).split("_")); //获取tags
                                                     if(tag + 1 < tagList.size()) {
                                                         for (int j = tag + 1; j < tagList.size() + 1; j++) {
+                                                            //大于被删除的tag的所有tag减一
                                                             for (int i = 0; i < noteList.size(); i++) {
                                                                 Note temp = noteList.get(i);
                                                                 if (temp.getTag() == j) {
@@ -264,6 +269,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
                                                         }
                                                     }
 
+                                                    //edit the preference
                                                     List<String> newTagList = new ArrayList<>();
                                                     newTagList.addAll(tagList);
                                                     newTagList.remove(position);
@@ -330,7 +336,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
 
     private void refreshTagList() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        List<String> tagList = Arrays.asList(sharedPreferences.getString("tagListString", null).split("_"));
+        List<String> tagList = Arrays.asList(sharedPreferences.getString("tagListString", null).split("_")); //获取tags
         tagAdapter = new TagAdapter(context, tagList, numOfTagNotes(tagList));
         lv_tag.setAdapter(tagAdapter);
         tagAdapter.notifyDataSetChanged();
@@ -377,18 +383,18 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
         myToolbar = findViewById(R.id.my_toolbar);
         refreshLvVisibility();
 
-        mEmptyView = findViewById(R.id.emptyView);
+        mEmptyView = findViewById(R.id.emptyView); // search page
 
         adapter = new NoteAdapter(getApplicationContext(), noteList);
         planAdapter = new PlanAdapter(getApplicationContext(), planList);
 
         refreshListView();
         lv.setAdapter(adapter);
-        lv.setEmptyView(mEmptyView);
+        lv.setEmptyView(mEmptyView); // connect empty textview with listview
         lv_plan.setAdapter(planAdapter);
 
         boolean temp = sharedPreferences.getBoolean("content_switch", false);
-        content_switch.setChecked(temp);
+        content_switch.setChecked(temp);//判断是看note还是plan
         content_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -403,8 +409,8 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, EditActivity.class);
-                intent.putExtra("mode", 4);
-                startActivityForResult(intent, 1);
+                intent.putExtra("mode", 4);     // MODE of 'new note'
+                startActivityForResult(intent, 1);      //collect data from edit
                 overridePendingTransition(R.anim.in_righttoleft, R.anim.out_righttoleft);
 
             }
@@ -413,7 +419,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, EditAlarmActivity.class);
-                intent.putExtra("mode", 2);
+                intent.putExtra("mode", 2); // MODE of 'new plan'
                 startActivityForResult(intent, 1);
                 overridePendingTransition(R.anim.in_righttoleft, R.anim.no);
             }
@@ -428,11 +434,12 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
 
         setSupportActionBar(myToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); //设置toolbar取代actionbar
         initPopupView();
     }
 
     private void refreshLvVisibility() {
+        //决定应该现实notes还是plans
         boolean temp = sharedPreferences.getBoolean("content_switch", false);
         if(temp){
             lv_layout.setVisibility(GONE);
@@ -449,11 +456,13 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
     }
 
     public void initPopupView() {
+        //instantiate the popup.xml layout file
         layoutInflater = (LayoutInflater) MainActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         customView = (ViewGroup) layoutInflater.inflate(R.layout.setting_layout, null);
         coverView = (ViewGroup) layoutInflater.inflate(R.layout.setting_cover, null);
 
         main = findViewById(R.id.main_layout);
+        //instantiate popup window
         wm = getWindowManager();
         metrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(metrics);
@@ -461,6 +470,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
     }
 
     private void initPrefs() {
+        //initialize all useful SharedPreferences for the first time the app runs
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -501,6 +511,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
+        //search setting
         MenuItem mSearch = menu.findItem(R.id.action_search);
         SearchView mSearchView = (SearchView) mSearch.getActionView();
 
@@ -532,9 +543,9 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
                             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                             builder.setTitle("Delete all "+ itemName);
                             builder.setIcon(R.drawable.ic_error_outline_black_24dp);
-                            builder.setItems(list_String, new DialogInterface.OnClickListener() {
+                            builder.setItems(list_String, new DialogInterface.OnClickListener() {//列表对话框；
                                 @Override
-                                public void onClick(DialogInterface dialog, final int which) {
+                                public void onClick(DialogInterface dialog, final int which) {//根据这里which值，即可以指定是点击哪一个Item；
                                     new AlertDialog.Builder(MainActivity.this)
                                             .setMessage("Do you want to delete all " + itemName + " " + list_String[which] + "? ")
                                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -545,6 +556,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
                                                     refreshListView();
                                                 }
 
+                                                //根据模式与时长删除对顶的计划s/笔记s
                                                 private void removeSelectItems(int which, int mode) {
                                                     int monthNum = 0;
                                                     switch (which){
@@ -562,7 +574,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
                                                             break;
                                                     }
                                                     Calendar rightNow = Calendar.getInstance();
-                                                    rightNow.add(Calendar.MONTH,-monthNum);
+                                                    rightNow.add(Calendar.MONTH,-monthNum);//日期加3个月
                                                     Date selectDate = rightNow.getTime();
                                                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                                     String selectDateStr = simpleDateFormat.format(selectDate);
@@ -686,11 +698,11 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
         com.example.atry.Alarm.CRUD op1 = new com.example.atry.Alarm.CRUD(context);
         op1.open();
         if(planList.size() > 0) {
-            cancelAlarms(planList);
+            cancelAlarms(planList);//删除所有闹钟
             planList.clear();
         }
         planList.addAll(op1.getAllPlans());
-        startAlarms(planList);
+        startAlarms(planList);//添加所有新闹钟
         if (sharedPreferences.getBoolean("reverseSort", false)) sortPlans(planList, 2);
         else sortPlans(planList, 1);
         op1.close();
@@ -782,9 +794,9 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
                 intent.putExtra("content", curNote.getContent());
                 intent.putExtra("id", curNote.getId());
                 intent.putExtra("time", curNote.getTime());
-                intent.putExtra("mode", 3);
+                intent.putExtra("mode", 3);     // MODE of 'click to edit'
                 intent.putExtra("tag", curNote.getTag());
-                startActivityForResult(intent, 1);
+                startActivityForResult(intent, 1);      //collect data from edit
                 overridePendingTransition(R.anim.in_righttoleft, R.anim.out_righttoleft);
                 break;
             case R.id.lv_plan:
@@ -927,7 +939,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
                         Log.d(TAG, "sortnotes 1");
                         return npLong(dateStrToSec(o2.getTime()) - dateStrToSec(o1.getTime()));
                     }
-                    else if (mode == 2) {
+                    else if (mode == 2) {//reverseSort
                         Log.d(TAG, "sortnotes 2");
                         return npLong(dateStrToSec(o1.getTime()) - dateStrToSec(o2.getTime()));
                     }
@@ -1121,6 +1133,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
 
 
         public void setState(int mode) {
+            //set corresponding state to true in case repetition of annoucement
             SharedPreferences.Editor editor = sharedPreferences.edit();
             switch (mode) {
                 case 1:
@@ -1137,6 +1150,7 @@ public class MainActivity extends BaseActivity implements OnItemClickListener, O
         }
         
         public void resetAll() {
+            //reset all prefs and state
             noteNumber = 0;
             wordNumber = 0;
             SharedPreferences.Editor editor = sharedPreferences.edit();

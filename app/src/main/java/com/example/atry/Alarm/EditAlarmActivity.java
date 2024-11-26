@@ -105,7 +105,7 @@ public class EditAlarmActivity extends BaseActivity implements View.OnClickListe
                     Intent intent1 = new Intent();
                     intent1.putExtra("mode", -1);
                     setResult(RESULT_OK, intent1);
-                    finish();//返回
+                    finish();
                     overridePendingTransition(R.anim.in_lefttoright, R.anim.out_lefttoright);
                 }
                 else if (et_title.getText().toString().length() == 0) {
@@ -115,17 +115,17 @@ public class EditAlarmActivity extends BaseActivity implements View.OnClickListe
                     isTimeChange();
                     Intent intent = new Intent();
                     if (openMode == 2) {
-                        intent.putExtra("mode", 10); // new one plan;
+                        intent.putExtra("mode", 10);
                         intent.putExtra("title", et_title.getText().toString());
                         intent.putExtra("content", et.getText().toString());
                         intent.putExtra("time", date.getText().toString() + " " + time.getText().toString());
                         Log.d(TAG, date.getText().toString() + time.getText().toString());
                     } else {
                         if (et.getText().toString().equals(old_content) && et_title.getText().toString().equals(old_title) && !timeChange) {
-                            intent.putExtra("mode", -1); // edit nothing
+                            intent.putExtra("mode", -1);
                         }
                         else {
-                            intent.putExtra("mode", 11); //edit the content
+                            intent.putExtra("mode", 11);
                             intent.putExtra("title", et_title.getText().toString());
                             intent.putExtra("content", et.getText().toString());
                             intent.putExtra("time", date.getText().toString() + " " + time.getText().toString());
@@ -162,17 +162,17 @@ public class EditAlarmActivity extends BaseActivity implements View.OnClickListe
                 isTimeChange();
                 Intent intent = new Intent();
                 if (openMode == 2) {
-                    intent.putExtra("mode", 10); // new one plan;
+                    intent.putExtra("mode", 10);
                     intent.putExtra("title", et_title.getText().toString());
                     intent.putExtra("content", et.getText().toString());
                     intent.putExtra("time", date.getText().toString() + " " + time.getText().toString());
                     Log.d(TAG, date.getText().toString() + time.getText().toString());
                 } else {
                     if (et.getText().toString().equals(old_content) && et_title.getText().toString().equals(old_title) && !timeChange) {
-                        intent.putExtra("mode", -1); // edit nothing
+                        intent.putExtra("mode", -1);
                     }
                     else {
-                        intent.putExtra("mode", 11); //edit the content
+                        intent.putExtra("mode", 11);
                         intent.putExtra("title", et_title.getText().toString());
                         intent.putExtra("content", et.getText().toString());
                         intent.putExtra("time", date.getText().toString() + " " + time.getText().toString());
@@ -186,8 +186,7 @@ public class EditAlarmActivity extends BaseActivity implements View.OnClickListe
         }
         return super.onKeyDown(keyCode, event);
     }
-
-
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.edit_menu, menu);
